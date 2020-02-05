@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/bulbt-app/static/css/main.30d6a40f.chunk.css",
+    "main.js": "/bulbt-app/static/js/main.7fe3f308.chunk.js",
+    "main.js.map": "/bulbt-app/static/js/main.7fe3f308.chunk.js.map",
+    "runtime-main.js": "/bulbt-app/static/js/runtime-main.8ad363a4.js",
+    "runtime-main.js.map": "/bulbt-app/static/js/runtime-main.8ad363a4.js.map",
+    "static/js/2.585a5e46.chunk.js": "/bulbt-app/static/js/2.585a5e46.chunk.js",
+    "static/js/2.585a5e46.chunk.js.map": "/bulbt-app/static/js/2.585a5e46.chunk.js.map",
+    "index.html": "/bulbt-app/index.html",
+    "precache-manifest.9164324ddfa50625c486cd8d7ffb6387.js": "/bulbt-app/precache-manifest.9164324ddfa50625c486cd8d7ffb6387.js",
+    "service-worker.js": "/bulbt-app/service-worker.js",
+    "static/css/main.30d6a40f.chunk.css.map": "/bulbt-app/static/css/main.30d6a40f.chunk.css.map",
+    "static/js/2.585a5e46.chunk.js.LICENSE.txt": "/bulbt-app/static/js/2.585a5e46.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8ad363a4.js",
+    "static/js/2.585a5e46.chunk.js",
+    "static/css/main.30d6a40f.chunk.css",
+    "static/js/main.7fe3f308.chunk.js"
+  ]
+}
