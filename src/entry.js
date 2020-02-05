@@ -1,8 +1,7 @@
 export default class Entry {
-    constructor(hanzi, pinyin, tone) {
+    constructor(hanzi, pinyin) {
         this.hanzi = hanzi;
         this.pinyin = pinyin;
-        this.tone = tone;
     }
 
 }

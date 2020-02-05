@@ -1,0 +1,34 @@
+.card-detail {
+    background-color: #2196f3;
+    width: 100%;
+    text-align: center;
+}
+
+.card-detail li {
+    list-style-type: none;
+    font-size: x-large;
+    color: white;
+}
+
+.card-detail .neutral {
+    color: white;
+}
+
+.card-detail .highlight {
+    color: #ff5722;
+}
+
+
+.list-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+.list-row .enumeration {
+    flex: 1;
+}
+
+.list-row .sentence {
+    flex: 3.5;
+}

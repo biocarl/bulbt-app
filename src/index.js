@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Entry from './entry.js';
+import Card from './card.js';
 import Mode from './mode_selector.js';
 import LoadDialog from './load_dialog.js';
+import CardDetail from './card_detail.js';
 
 
 function Tile(props) {
@@ -54,12 +55,13 @@ class Game extends React.Component {
             isGame: false,
             isRunning: false,
             showGameStatus: false,
+            showDetails: false,
             answerCorrect: false,
             answers: Array(4).fill(null), //the 4 possible current answers
-            question: new Entry("水", "shuǐ", "water"), //the correct answer card
+            question: new Card("水", "shuǐ", "water"), //the correct answer card
             player: "X",
             entries: null, //describing all parsed entries
-            mode: new Mode(null) //decides which field of the entry is questioned and answered
+            mode: new Mode(null) //decides which field of the card is questioned and answered
         }
     }
 
@@ -81,10 +83,11 @@ class Game extends React.Component {
     }
 
     setUpNewRound() {
-        let answers = this.shuffle(this.state.entries.slice()).slice(0, 4);
+        let answers = this.shuffle(this.state.cards.slice()).slice(0, 4);
         let question = this.shuffle(answers.slice())[0];
         this.setState({
             showGameStatus: false,
+            showDetails: false,
             isRunning: true,
             answers: answers,
             question: question,
@@ -92,8 +95,9 @@ class Game extends React.Component {
 
     }
 
-    updateEntryData(entries) {
+    updateEntryData(cards, entries) {
         this.setState({
+            cards: cards,
             entries: entries,
             isGame: true,
         });
@@ -101,7 +105,7 @@ class Game extends React.Component {
 
     render() {
         if (!this.state.isGame) {
-            return <LoadDialog loadData={(entries) => this.updateEntryData(entries)}/>
+            return <LoadDialog loadData={(cards, entries) => this.updateEntryData(cards, entries)}/>
         }
 
         if (!this.state.isRunning) {
@@ -111,8 +115,9 @@ class Game extends React.Component {
         return (
             <div>
                 <h1 className="game-title">Chinese characters game</h1>
-                <div className="question-bar"> How is the character pronounced? <br/> <span
-                    id="question-highlight"> {this.state.mode.getQuestionField(this.state.question)}  </span>
+                <div className="question-bar"> How is the character pronounced? <br/>
+                    <span onClick={() => this.setState({showDetails: true})}
+                          id="question-highlight"> {this.state.mode.getQuestionField(this.state.question)}  </span>
                 </div>
                 <div className="game">
                     <div className="game-board">
@@ -121,15 +126,27 @@ class Game extends React.Component {
                             answers={this.state.answers}
                             onClick={(i) => this.evaluateAnswer(i)}
                         />
-
-                        {this.state.showGameStatus ? <GameStatus
-                            status={this.state.answerCorrect}
-                            onClick={() => this.setUpNewRound()}
-                        /> : null}
                     </div>
                 </div>
+                {this.state.showDetails ? <CardDetail questionCard={this.state.question}
+                                                      cardEntries={this.getEntriesAssociatedWithCard(this.state.question)}
+                                                      onClick={() => this.showDetails()}/> : null}
+                {this.state.showGameStatus ?
+                    <GameStatus status={this.state.answerCorrect} onClick={() => this.setUpNewRound()}/> : null}
             </div>
         );
+    }
+
+    getEntriesAssociatedWithCard(card) {
+        let entries = [];
+        this.state.entries.forEach((entry) => {
+                if (entry.hanzi.includes(card.hanzi)) {
+                    console.log(entry.hanzi);
+                    entries.push(entry);
+                }
+            }
+        );
+        return entries;
     }
 }
 
