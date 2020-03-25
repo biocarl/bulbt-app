@@ -9,7 +9,7 @@ import CardDetail from './card_detail.js';
 
 function Tile(props) {
     return (
-        <button className="tile" onClick={props.onClick}>
+            <button className="tile" onClick={props.onClick}>
             {props.value}
         </button>
     );
@@ -18,31 +18,31 @@ function Tile(props) {
 class Board extends React.Component {
     renderTile(i) {
         return (<Tile
-            value={this.props.mode.getAnswerField(this.props.answers[i])}
-            onClick={() => this.props.onClick(i)}
-        />);
+                value={this.props.mode.getAnswerField(this.props.answers[i])}
+                onClick={() => this.props.onClick(i)}
+                />);
     }
 
     render() {
         return (
-            <div className="board">
+                <div className="board">
                 <div className="board-row">
-                    {this.renderTile(0)}
-                    {this.renderTile(1)}
-                </div>
-                <div className="board-row">
-                    {this.renderTile(2)}
-                    {this.renderTile(3)}
-                </div>
+                {this.renderTile(0)}
+            {this.renderTile(1)}
             </div>
+                <div className="board-row">
+                {this.renderTile(2)}
+            {this.renderTile(3)}
+            </div>
+                </div>
         );
     }
 }
 
 function GameStatus(props) {
     return (
-        <button style={{background: props.status ? "#2196F3" : "#FF5722"}} className="game-status"
-                onClick={props.onClick}>
+            <button style={{background: props.status ? "#2196F3" : "#FF5722"}} className="game-status"
+        onClick={props.onClick}>
             {props.status ? "Correct." : "Try again."}
         </button>
     );
@@ -53,6 +53,8 @@ class Game extends React.Component {
         super(props);
         this.state = {
             isGame: false,
+            isRandom: false,
+            relativePosition: 0,
             isRunning: false,
             showGameStatus: false,
             showDetails: false,
@@ -83,19 +85,36 @@ class Game extends React.Component {
     }
 
     setUpNewRound() {
-        let answers = this.shuffle(this.state.cards.slice()).slice(0, 4);
-        let question = this.shuffle(answers.slice())[0];
+        let answers;
+        let question;
+        let position = this.state.relativePosition;
+
+        if(this.state.isRandom){
+            answers = this.shuffle(this.state.cards.slice()).slice(0, 4);
+            question = this.shuffle(answers.slice())[0];
+        }else{
+            if(position >= this.state.cards.length){
+                return;
+            }
+            answers = this.shuffle(this.state.cards.slice()).slice(0, 3);
+            question = this.state.cards[this.state.relativePosition];
+            answers.push(question);
+            answers = this.shuffle(answers);
+            position++;
+            //this.shuffle(answers.slice())[0];
+        }
         this.setState({
             showGameStatus: false,
             showDetails: false,
+            relativePosition: position,
             isRunning: true,
             answers: answers,
             question: question,
         });
-
     }
 
     updateEntryData(cards, entries) {
+        this.shuffle(cards);
         this.setState({
             cards: cards,
             entries: entries,
@@ -113,26 +132,32 @@ class Game extends React.Component {
         }
 
         return (
-            <div>
-                <h1 className="game-title">Chinese characters game</h1>
+                <div>
+                <h1 className="game-title">Chinese characters game
+            </h1>
+             
+                <h1 className="game-title">
+            {"Card: " +this.state.relativePosition+ "/" + this.state.cards.length}
+            </h1>
+
                 <div className="question-bar"> How is the character pronounced? <br/>
-                    <span onClick={() => this.setState({showDetails: true})}
-                          id="question-highlight"> {this.state.mode.getQuestionField(this.state.question)}  </span>
+                <span onClick={() => this.setState({showDetails: true})}
+            id="question-highlight"> {this.state.mode.getQuestionField(this.state.question)}  </span>
                 </div>
                 <div className="game">
-                    <div className="game-board">
-                        <Board
-                            mode={this.state.mode}
-                            answers={this.state.answers}
-                            onClick={(i) => this.evaluateAnswer(i)}
-                        />
-                    </div>
+                <div className="game-board">
+                <Board
+            mode={this.state.mode}
+            answers={this.state.answers}
+            onClick={(i) => this.evaluateAnswer(i)}
+                />
+                </div>
                 </div>
                 {this.state.showDetails ? <CardDetail questionCard={this.state.question}
-                                                      cardEntries={this.getEntriesAssociatedWithCard(this.state.question)}
-                                                      onClick={() => this.showDetails()}/> : null}
-                {this.state.showGameStatus ?
-                    <GameStatus status={this.state.answerCorrect} onClick={() => this.setUpNewRound()}/> : null}
+                 cardEntries={this.getEntriesAssociatedWithCard(this.state.question)}
+                 onClick={() => this.showDetails()}/> : null}
+            {this.state.showGameStatus ?
+             <GameStatus status={this.state.answerCorrect} onClick={() => this.setUpNewRound()}/> : null}
             </div>
         );
     }
@@ -140,12 +165,12 @@ class Game extends React.Component {
     getEntriesAssociatedWithCard(card) {
         let entries = [];
         this.state.entries.forEach((entry) => {
-                if (entry.hanzi.includes(card.hanzi)) {
-                    console.log(entry.hanzi);
-                    entries.push(entry);
-                }
+            if (entry.hanzi.includes(card.hanzi)) {
+                console.log(entry.hanzi);
+                entries.push(entry);
             }
-        );
+        }
+                                  );
         return entries;
     }
 }
@@ -153,6 +178,6 @@ class Game extends React.Component {
 
 // ========================================
 ReactDOM.render(
-    <div className="content"><Game/></div>,
+        <div className="content"><Game/></div>,
     document.getElementById('root')
 );

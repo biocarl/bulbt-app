@@ -14,6 +14,9 @@ export default function LoadDialog(props) {
                 new Card("水", "shuǐ", "water"),
                 new Card("风", "fēng", "wind"),
                 new Card("火", "huǒ", "fire"),
+                new Card("而", "ér", "and"),
+                new Card("者", "zhě", "person"),
+                new Card("军", "jūn", "military"),
                 new Card("土", "tŭ", "earth")
             ];
             entryList = [
@@ -34,7 +37,7 @@ export default function LoadDialog(props) {
                     cardList = cards;
                     entryList = entries
                 }}></ImportFromFileBodyComponent>
-                <button className="load-button" onClick={() => verifyAndLoad(props)}> Parse Pleco dictionary</button>
+                <button className="load-button" onClick={() => verifyAndLoad(props)}> Start</button>
             </div>
             <div className="pleco-descripion">
                 About Pleco<br/><br/>
